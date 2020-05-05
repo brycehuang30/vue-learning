@@ -1,4 +1,4 @@
 module.exports = {
-    publicPath: './',
-    indexPath: 'index.php',
+    publicPath: "./",
+    indexPath: "index.php",
 };
