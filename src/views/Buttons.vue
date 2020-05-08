@@ -5,10 +5,12 @@
             <ClickCountButton
                 v-for="index in clickCountButtonNum"
                 :key="index"
+                @submit-value="addToSum"
             />
         </div>
         <div class="buttons-row">
             <ResetButton />
+            <SumButton />
         </div>
     </div>
 </template>
@@ -17,6 +19,7 @@
 // @ is an alias to /src
 import ClickCountButton from "@/components/ClickCountButton.vue";
 import ResetButton from "@/components/ResetButton.vue";
+import SumButton from "@/components/SumButton.vue";
 import Screen from "@/components/Screen.vue";
 
 export default {
@@ -24,6 +27,7 @@ export default {
     components: {
         ClickCountButton,
         ResetButton,
+        SumButton,
         Screen,
     },
     data() {
@@ -38,6 +42,9 @@ export default {
         });
     },
     methods: {
+        addToSum(value) {
+            this.buttonSum += value;
+        },
     },
 };
 </script>

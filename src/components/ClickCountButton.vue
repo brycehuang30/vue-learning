@@ -28,6 +28,11 @@ export default Vue.extend({
         this.$root.$on("reset-buttons", () => {
             this.clickCount = 0;
         });
+
+        this.$root.$on("sum-buttons", () => {
+            this.$emit("submit-value", this.clickCount);
+            this.clickCount = 0;
+        });
     },
     methods: {
         addOne() {
