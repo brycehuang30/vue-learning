@@ -33,6 +33,10 @@ export default Vue.extend({
             this.$emit("submit-value", this.clickCount);
             this.clickCount = 0;
         });
+        this.$root.$on("mul-buttons", () => {
+            this.$emit("mul-value", this.clickCount);
+            this.clickCount = 0;
+        });
     },
     methods: {
         addOne() {

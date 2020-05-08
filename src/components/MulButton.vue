@@ -1,9 +1,9 @@
 <template>
     <div
-        class="sum-button"
-        @click="sendSumSignal"
+        class="mul-button"
+        @click="sendMulSignal"
     >
-        Sum
+        Mul
     </div>
 </template>
 
@@ -12,7 +12,7 @@
 import Vue from "vue";
 
 export default Vue.extend({
-    name: "SumButton",
+    name: "MulButton",
     props: {
     },
     data() {
@@ -20,8 +20,8 @@ export default Vue.extend({
         };
     },
     methods: {
-        sendSumSignal() {
-            this.$root.$emit("sum-buttons");
+        sendMulSignal() {
+            this.$root.$emit("mul-buttons");
         },
     },
 });
@@ -29,10 +29,10 @@ export default Vue.extend({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.sum-button {
+.mul-button {
     width: 50px;
     height: 30px;
-    background-color: rgb(25, 46, 80);
+    background-color: #2a5019;
     color: white;
     display: flex;
     flex-direction: row;
