@@ -34,8 +34,10 @@ export default Vue.extend({
             this.clickCount = 0;
         });
         this.$root.$on("mul-buttons", () => {
-            this.$emit("mul-value", this.clickCount);
-            this.clickCount = 0;
+            if (this.clickCount > 0) {
+                this.$emit("mul-value", this.clickCount);
+                this.clickCount = 0;
+            }
         });
     },
     methods: {
