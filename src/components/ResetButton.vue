@@ -1,37 +1,27 @@
 <template>
     <div
-        class="click-count-button"
-        @click="addOne"
+        class="reset-button"
+        @click="sendResetSignal"
     >
-        {{ clickCount }}
+        Reset
     </div>
 </template>
 
 <script lang="ts">
+
 import Vue from "vue";
 
 export default Vue.extend({
-    name: "ClickCountButton",
+    name: "ResetButton",
     props: {
-        msg: {
-            type: String,
-            default: "",
-            required: false,
-        },
     },
     data() {
         return {
-            clickCount: 0,
         };
     },
-    mounted() {
-        this.$root.$on("reset-buttons", () => {
-            this.clickCount = 0;
-        });
-    },
     methods: {
-        addOne() {
-            this.clickCount += 1;
+        sendResetSignal() {
+            this.$root.$emit("reset-buttons");
         },
     },
 });
@@ -39,10 +29,10 @@ export default Vue.extend({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.click-count-button {
+.reset-button {
     width: 50px;
     height: 30px;
-    background-color: aquamarine;
+    background-color: red;
     color: black;
     display: flex;
     flex-direction: row;

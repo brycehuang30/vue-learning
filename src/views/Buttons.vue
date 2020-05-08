@@ -11,11 +11,13 @@
 <script>
 // @ is an alias to /src
 import ClickCountButton from "@/components/ClickCountButton.vue";
+import ResetButton from "@/components/ResetButton.vue";
 
 export default {
     name: "Buttons",
     components: {
         ClickCountButton,
+        ResetButton,
     },
     data() {
         return {
