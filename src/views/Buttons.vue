@@ -10,6 +10,9 @@
             />
         </div>
         <div class="buttons-row">
+            <NumberButton />
+        </div>
+        <div class="buttons-row">
             <ResetButton />
             <SumButton />
             <MulButton />
@@ -24,6 +27,8 @@ import ResetButton from "@/components/ResetButton.vue";
 import SumButton from "@/components/SumButton.vue";
 import Screen from "@/components/Screen.vue";
 import MulButton from "@/components/MulButton.vue";
+import NumberButton from "@/components/NumberButton.vue";
+
 
 export default {
     name: "Buttons",
@@ -33,6 +38,7 @@ export default {
         SumButton,
         Screen,
         MulButton,
+        NumberButton,
     },
     data() {
         return {
