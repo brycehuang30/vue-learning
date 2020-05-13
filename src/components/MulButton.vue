@@ -3,7 +3,7 @@
         class="mul-button"
         @click="sendMulSignal"
     >
-        Mul
+        Mul x
     </div>
 </template>
 

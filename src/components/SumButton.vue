@@ -3,7 +3,7 @@
         class="sum-button"
         @click="sendSumSignal"
     >
-        Sum
+        Sum +
     </div>
 </template>
 

@@ -1,23 +1,27 @@
 <template>
-    <div class="button">
-        <div
-            class="number-button"
-            @click="add"
-        >
-            {{ number }}
-        </div>
+    <div
+        class="equal-button"
+        @click="sendMulSignal"
+    >
+        =
     </div>
 </template>
 
 <script lang="ts">
+
 import Vue from "vue";
 
 export default Vue.extend({
-    name: "NumberButton",
+    name: "EqualButton",
     props: {
-        number: {
-            type: Number,
-            default: 0,
+    },
+    data() {
+        return {
+        };
+    },
+    methods: {
+        sendMulSignal() {
+            this.$root.$emit("equal-buttons");
         },
     },
 });
@@ -25,11 +29,11 @@ export default Vue.extend({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.number-button {
+.equal-button {
     width: 50px;
     height: 30px;
-    background-color: #fff27f;
-    color: black;
+    background-color: #000000;
+    color: white;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -37,5 +41,4 @@ export default Vue.extend({
     font-size: 10px;
     margin: 3px;
 }
-
 </style>
