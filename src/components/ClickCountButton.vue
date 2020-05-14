@@ -3,7 +3,7 @@
         class="click-count-button"
         @click="addOne"
     >
-        {{ clickCount }}
+        {{ msg }}
     </div>
 </template>
 
