@@ -25,6 +25,6 @@ module.exports = {
             ignores: [],
         }],
         quotes: ["error", "double"],
-        "linebreak-style": "off"
+        "linebreak-style": "off",
     },
 };

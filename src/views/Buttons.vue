@@ -107,10 +107,41 @@ export default {
         },
         lock() {
             // TODO: 補上做lock action的狀態轉換
+            switch (this.currentStatus) {
+                case this.DOOR_CLOSE_STATE:
+                case this.DOOR_LOCKED_STATE:
+                    this.currentStatus = this.DOOR_LOCKED_STATE;
+                    break;
+                case this.DOOR_OPEN_STATE:
+                    this.currentStatus = this.DOOR_OPEN_STATE;
+                    break;
+                case this.DOOR_HALF_STATE:
+                    this.currentStatus = this.DOOR_HALF_STATE;
+                    break;
 
+                default:
+                    console.log(`unexpected state${this.currentStatus}`);
+            }
         },
         unlock() {
             // TODO: 補上做unlock action的狀態轉換
+            switch (this.currentStatus) {
+                case this.DOOR_CLOSE_STATE:
+                    this.currentStatus = this.DOOR_CLOSE_STATE;
+                    break;
+                case this.DOOR_LOCKED_STATE:
+                    this.currentStatus = this.DOOR_CLOSE_STATE;
+                    break;
+                case this.DOOR_OPEN_STATE:
+                    this.currentStatus = this.DOOR_OPEN_STATE;
+                    break;
+                case this.DOOR_HALF_STATE:
+                    this.currentStatus = this.DOOR_HALF_STATE;
+                    break;
+
+                default:
+                    console.log(`unexpected state${this.currentStatus}`);
+            }
         },
     },
 };
