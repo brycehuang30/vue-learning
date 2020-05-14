@@ -1,17 +1,16 @@
-/* eslint-disable no-undef */
 <template>
     <div class="buttons-wrapper">
-        <Screen :value="answer" />
+        <Screen :value="screenValue" />
         <div class="number-buttons">
             <NumberButton
                 v-for="(n,index) in number"
                 :key="index"
                 :number="n"
-                @click.native="add(n)"
+                @click.native="inputValue(n)"
             />
             <NumberButton
                 :number="0"
-                @click.native="add(0)"
+                @click.native="inputValue(0)"
             />
         </div>
         <div class="buttons-row">
@@ -21,10 +20,10 @@
             <EqualButton />
         </div>
         <div>
-            numberstring1: {{ numberstring1 }}
+            currentInput: {{ currentInput }}
         </div>
         <div>
-            numberstring2: {{ numberstring2 }}
+            answer: {{ answer }}
         </div>
     </div>
 </template>
@@ -52,63 +51,161 @@ export default {
     data() {
         return {
             answer: 0,
+            // screenValue: 0, // your "answer"
+            currentInput: 0, // your "numberstring1"
             number: [1, 2, 3, 4, 5, 6, 7, 8, 9],
             numberstring1: 0,
             numberstring2: 0,
+
+            // status definition
+            INPUT_LEFT_STATE: 1,
+            INPUT_RIGHT_STATE: 2,
+            SHOW_ANSWER_STATE: 3,
+            CALCULATE_STATE: 4,
+            CHANGE_OPERATOR_STATE: 5,
+
+            currentState: 1,
+
+
+            operation: Function,
         };
+    },
+    computed: {
+        screenValue() {
+            if (this.currentState === this.SHOW_ANSWER_STATE
+            || this.currentState === this.CALCULATE_STATE
+            || this.currentState === this.CHANGE_OPERATOR_STATE
+            || this.currentState === this.INPUT_LEFT_STATE) {
+                return this.answer;
+            }
+            return this.currentInput;
+        },
     },
     mounted() {
         this.$root.$on("reset-buttons", () => {
             this.clear();
         });
         this.$root.$on("sum-buttons", () => {
-            this.sum();
-            this.screenzero();
-            this.store();
-        });
-        this.$root.$on("mul-buttons", () => {
-            if (this.numberstring2 === 0) {
-                this.numberstring2 = this.numberstring1;
-                this.numberstring1 = 1;
-                this.mul();
-                this.store();
-                this.screenzero();
-            } else {
-                this.mul();
-                this.store();
-                this.screenzero();
-            }
+            this.onOperater(this.sum);
         });
 
-        // this.$root.$on("equal-buttons", () => {
-        // });
+        this.$root.$on("mul-buttons", () => {
+            this.onOperater(this.mul);
+        });
+
+        this.$root.$on("equal-buttons", () => {
+            this.onEqual();
+        });
     },
     methods: {
-        add(value) {
-            if (this.answer === 0) {
-                this.numberstring1 = String(value);
-                this.answer = this.numberstring1;
-            } else {
-                this.numberstring1 += String(value);
-                this.answer = this.numberstring1;
+        inputValue(value) {
+            switch (this.currentState) {
+                case this.INPUT_LEFT_STATE:
+                    this.answer = this.answer * 10 + value;
+
+                    // set next state
+                    this.currentState = this.INPUT_LEFT_STATE;
+                    break;
+
+                case this.INPUT_RIGHT_STATE:
+                    this.currentInput = this.currentInput * 10 + value;
+
+                    // set next state
+                    this.currentState = this.INPUT_RIGHT_STATE;
+                    break;
+
+                case this.CALCULATE_STATE:
+                case this.CHANGE_OPERATOR_STATE:
+                    this.currentInput = value;
+
+                    // set next state
+                    this.currentState = this.INPUT_RIGHT_STATE;
+                    break;
+
+
+                case this.SHOW_ANSWER_STATE:
+                    this.clear();
+                    this.answer = value;
+
+                    // set next state
+                    this.currentState = this.INPUT_LEFT_STATE;
+                    break;
+
+                default:
+                    console.log(`unexpect state: ${this.currentState}`);
+            }
+        },
+        onOperater(operation) {
+            switch (this.currentState) {
+                case this.INPUT_LEFT_STATE:
+                    this.operation = operation;
+
+                    // set next state
+                    this.currentState = this.INPUT_RIGHT_STATE;
+                    break;
+
+                case this.INPUT_RIGHT_STATE:
+                    this.answer = this.operation(this.answer, this.currentInput);
+
+                    // set next state
+                    this.currentState = this.CALCULATE_STATE;
+                    break;
+
+
+                case this.CALCULATE_STATE:
+                case this.CHANGE_OPERATOR_STATE:
+                    this.operation = operation;
+
+                    // set next state
+                    this.currentState = this.CHANGE_OPERATOR_STATE;
+                    break;
+
+                case this.SHOW_ANSWER_STATE:
+                    this.operation = operation;
+
+                    // set next state
+                    this.currentState = this.CHANGE_OPERATOR_STATE;
+                    break;
+
+                default:
+                    console.log(`unexpect state: ${this.currentState}`);
+            }
+        },
+        onEqual() {
+            switch (this.currentState) {
+                case this.INPUT_LEFT_STATE:
+                    // set next state
+                    this.currentState = this.INPUT_LEFT_STATE;
+                    break;
+
+                case this.INPUT_RIGHT_STATE:
+                    this.answer = this.operation(this.answer, this.currentInput);
+
+                    // set next state
+                    this.currentState = this.SHOW_ANSWER_STATE;
+                    break;
+
+
+                case this.CALCULATE_STATE:
+                case this.CHANGE_OPERATOR_STATE:
+                case this.SHOW_ANSWER_STATE:
+                    // set next state
+                    this.currentState = this.SHOW_ANSWER_STATE;
+                    break;
+
+                default:
+                    console.log(`unexpect state: ${this.currentState}`);
             }
         },
         clear() {
             this.answer = 0;
-            this.numberstring1 = 0;
-            this.numberstring2 = 0;
+            this.currentInput = 0;
         },
-        store() {
-            this.numberstring2 = this.answer;
+        sum(leftValue, rightValue) {
+            return leftValue + rightValue;
         },
-        sum() {
-            this.answer = parseInt(this.numberstring1, 10) + parseInt(this.numberstring2, 10);
-        },
-        mul() {
-            this.answer = parseInt(this.numberstring1, 10) * parseInt(this.numberstring2, 10);
-        },
-        screenzero() {
-            this.numberstring1 = 0;
+        mul(leftValue, rightValue) {
+            return leftValue * rightValue;
         },
     },
 };
