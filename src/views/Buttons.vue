@@ -136,15 +136,22 @@ export default {
                     break;
 
                 case this.INPUT_RIGHT_STATE:
-                    this.currentStatus = this.ERROR_STATE;
+                    this.currentStatus = this.INPUT_RIGHT_STATE;
+                    this.leftValue += this.screen;
+                    this.rightValue = 0;
+                    this.screen = this.leftValue;
                     break;
 
                 case this.SHOW_ANSWER_STATE:
-                    this.currentStatus = this.INPUT_LEFT_STATE;
+                    this.currentStatus = this.INPUT_RIGHT_STATE;
+                    this.leftValue = this.screen;
+                    this.rightValue = 0;
                     break;
 
                 case this.ERROR_STATE:
-                    this.currentStatus = this.ERROR_STATE;
+                    this.currentStatus = this.INPUT_RIGHT_STATE;
+                    this.leftValue = this.screen;
+                    this.rightValue = 0;
                     break;
 
                 default:
