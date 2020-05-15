@@ -26,6 +26,9 @@
         <div>
             numberstring2: {{ numberstring2 }}
         </div>
+        <div>
+            caculator現在狀態： {{ caculator }}
+        </div>
     </div>
 </template>
 
@@ -55,7 +58,36 @@ export default {
             number: [1, 2, 3, 4, 5, 6, 7, 8, 9],
             numberstring1: 0,
             numberstring2: 0,
+
+            currentStatus: 0,
+            // 設定state, 通常就是從0開始編流水號,
+            // 我們只要讓每個STATE對應到的號碼不同就好了
+            INPUT_LEFT_STATE: 0,
+            INPUT_RIGHT_STATE: 1,
+            SHOW_ANSWER_STATE: 2,
+            ERROR_STATE: 3,
         };
+    },
+    computed: {
+        caculator() {
+            // 根據目前的狀態顯示文字
+            switch (this.currentStatus) {
+                case this.INPUT_LEFT_STATE:
+                    return "輸入左半數字";
+
+                case this.INPUT_RIGHT_STATE:
+                    return "輸入右半數字";
+
+                case this.SHOW_ANSWER_STATE:
+                    return "顯示答案";
+
+                case this.ERROR_STATE:
+                    return "錯誤";
+
+                default:
+                    return "Error";
+            }
+        },
     },
     mounted() {
         this.$root.$on("reset-buttons", () => {
@@ -109,6 +141,94 @@ export default {
         },
         screenzero() {
             this.numberstring1 = 0;
+        },
+        digit() {
+            switch (this.currentStatus) {
+                case this.INPUT_LEFT_STATE:
+                    this.currentStatus = this.INPUT_LEFT_STATE;
+                    break;
+
+                case this.INPUT_RIGHT_STATE:
+                    this.currentStatus = this.INPUT_RIGHT_STATE;
+                    break;
+
+                case this.SHOW_ANSWER_STATE:
+                    this.currentStatus = this.INPUT_LEFT_STATE;
+                    break;
+
+                case this.ERROR_STATE:
+                    this.currentStatus = this.ERROR_STATE;
+                    break;
+
+                default:
+                    console.log(`unexpected state${this.currentStatus}`);
+            }
+        },
+        op() {
+            switch (this.currentStatus) {
+                case this.INPUT_LEFT_STATE:
+                    this.currentStatus = this.INPUT_RIGHT_STATE;
+                    break;
+
+                case this.INPUT_RIGHT_STATE:
+                    this.currentStatus = this.ERROR_STATE;
+                    break;
+
+                case this.SHOW_ANSWER_STATE:
+                    this.currentStatus = this.INPUT_LEFT_STATE;
+                    break;
+
+                case this.ERROR_STATE:
+                    this.currentStatus = this.ERROR_STATE;
+                    break;
+
+                default:
+                    console.log(`unexpected state${this.currentStatus}`);
+            }
+        },
+        equel() {
+            switch (this.currentStatus) {
+                case this.INPUT_LEFT_STATE:
+                    this.currentStatus = this.ERROR_STATE;
+                    break;
+
+                case this.INPUT_RIGHT_STATE:
+                    this.currentStatus = this.SHOW_ANSWER_STATE;
+                    break;
+
+                case this.SHOW_ANSWER_STATE:
+                    this.currentStatus = this.ERROR_STATE;
+                    break;
+
+                case this.ERROR_STATE:
+                    this.currentStatus = this.ERROR_STATE;
+                    break;
+
+                default:
+                    console.log(`unexpected state${this.currentStatus}`);
+            }
+        },
+        reset() {
+            switch (this.currentStatus) {
+                case this.INPUT_LEFT_STATE:
+                    this.currentStatus = this.INPUT_LEFT_STATE;
+                    break;
+
+                case this.INPUT_RIGHT_STATE:
+                    this.currentStatus = this.INPUT_LEFT_STATE;
+                    break;
+
+                case this.SHOW_ANSWER_STATE:
+                    this.currentStatus = this.INPUT_LEFT_STATE;
+                    break;
+
+                case this.ERROR_STATE:
+                    this.currentStatus = this.INPUT_LEFT_STATE;
+                    break;
+
+                default:
+                    console.log(`unexpected state${this.currentStatus}`);
+            }
         },
     },
 };
