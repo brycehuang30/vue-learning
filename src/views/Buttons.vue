@@ -1,37 +1,22 @@
 /* eslint-disable no-undef */
 <template>
     <div class="buttons-wrapper">
-        <Screen :value="answer" />
+        <Screen :value="screen" />
         <div class="number-buttons">
             <NumberButton
                 v-for="(n,index) in number"
                 :key="index"
                 :number="n"
-                @click.native="add(n)"
+                @click.native="digit(n)"
             />
             <NumberButton
                 :number="0"
-                @click.native="add(0)"
+                @click.native="digit(0)"
             />
         </div>
         <div class="buttons-row">
-            <ResetButton />
-            <SumButton />
-            <MulButton />
-            <EqualButton />
-        </div>
-        <div>
-            numberstring1: {{ numberstring1 }}
-        </div>
-        <div>
-            numberstring2: {{ numberstring2 }}
-        </div>
-        <div>
-            caculator現在狀態： {{ caculator }}
-        </div>
-        <div>
-            <NumberButton
-                @click.native="digit"
+            <ResetButton
+                @click.native="reset"
             />
             <SumButton
                 @click.native="op"
@@ -39,15 +24,12 @@
             <MulButton
                 @click.native="op"
             />
-            <NumberButton
-                @click.native="digit"
-            />
             <EqualButton
                 @click.native="equel"
             />
-            <ResetButton
-                @click.native="reset"
-            />
+        </div>
+        <div>
+            caculator現在狀態： {{ caculator }}
         </div>
     </div>
 </template>
@@ -74,10 +56,12 @@ export default {
     },
     data() {
         return {
-            answer: 0,
+
             number: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            numberstring1: 0,
-            numberstring2: 0,
+
+            leftValue: 0,
+            rightValue: 0,
+            screen: 0,
 
             currentStatus: 0,
             INPUT_LEFT_STATE: 0,
@@ -91,13 +75,13 @@ export default {
             // 根據目前的狀態顯示文字
             switch (this.currentStatus) {
                 case this.INPUT_LEFT_STATE:
-                    return "輸入左半數字";
+                    return `全新的左半${this.leftValue}`;
 
                 case this.INPUT_RIGHT_STATE:
-                    return "輸入右半數字";
+                    return `按了加號的右半${this.rightValue}`;
 
                 case this.SHOW_ANSWER_STATE:
-                    return "顯示答案";
+                    return `按了等於合計是${this.leftValue + this.rightValue}`;
 
                 case this.ERROR_STATE:
                     return "錯誤";
@@ -107,75 +91,33 @@ export default {
             }
         },
     },
-    mounted() {
-        this.$root.$on("reset-buttons", () => {
-            this.clear();
-        });
-        this.$root.$on("sum-buttons", () => {
-            this.sum();
-            this.screenzero();
-            this.store();
-        });
-        this.$root.$on("mul-buttons", () => {
-            if (this.numberstring2 === 0) {
-                this.numberstring2 = this.numberstring1;
-                this.numberstring1 = 1;
-                this.mul();
-                this.store();
-                this.screenzero();
-            } else {
-                this.mul();
-                this.store();
-                this.screenzero();
-            }
-        });
-
-        // this.$root.$on("equal-buttons", () => {
-        // });
-    },
     methods: {
-        add(value) {
-            if (this.answer === 0) {
-                this.numberstring1 = String(value);
-                this.answer = this.numberstring1;
-            } else {
-                this.numberstring1 += String(value);
-                this.answer = this.numberstring1;
-            }
-        },
-        clear() {
-            this.answer = 0;
-            this.numberstring1 = 0;
-            this.numberstring2 = 0;
-        },
-        store() {
-            this.numberstring2 = this.answer;
-        },
-        sum() {
-            this.answer = parseInt(this.numberstring1, 10) + parseInt(this.numberstring2, 10);
-        },
-        mul() {
-            this.answer = parseInt(this.numberstring1, 10) * parseInt(this.numberstring2, 10);
-        },
-        screenzero() {
-            this.numberstring1 = 0;
-        },
-        digit() {
+        digit(value) {
             switch (this.currentStatus) {
                 case this.INPUT_LEFT_STATE:
                     this.currentStatus = this.INPUT_LEFT_STATE;
+                    this.leftValue = this.leftValue * 10 + value;
+                    this.screen = this.leftValue;
                     break;
 
                 case this.INPUT_RIGHT_STATE:
                     this.currentStatus = this.INPUT_RIGHT_STATE;
+                    this.rightValue = this.rightValue * 10 + value;
+                    this.screen = this.rightValue;
                     break;
 
                 case this.SHOW_ANSWER_STATE:
                     this.currentStatus = this.INPUT_LEFT_STATE;
+                    this.leftValue = value;
+                    this.rightValue = 0;
+                    this.screen = value;
                     break;
 
                 case this.ERROR_STATE:
-                    this.currentStatus = this.ERROR_STATE;
+                    this.currentStatus = this.INPUT_LEFT_STATE;
+                    this.leftValue = value;
+                    this.rightValue = 0;
+                    this.screen = value;
                     break;
 
                 default:
@@ -212,6 +154,7 @@ export default {
 
                 case this.INPUT_RIGHT_STATE:
                     this.currentStatus = this.SHOW_ANSWER_STATE;
+                    this.screen = this.leftValue + this.rightValue;
                     break;
 
                 case this.SHOW_ANSWER_STATE:
@@ -229,21 +172,14 @@ export default {
         reset() {
             switch (this.currentStatus) {
                 case this.INPUT_LEFT_STATE:
-                    this.currentStatus = this.INPUT_LEFT_STATE;
-                    break;
-
                 case this.INPUT_RIGHT_STATE:
-                    this.currentStatus = this.INPUT_LEFT_STATE;
-                    break;
-
                 case this.SHOW_ANSWER_STATE:
-                    this.currentStatus = this.INPUT_LEFT_STATE;
-                    break;
-
                 case this.ERROR_STATE:
                     this.currentStatus = this.INPUT_LEFT_STATE;
+                    this.leftValue = 0;
+                    this.rightValue = 0;
+                    this.screen = 0;
                     break;
-
                 default:
                     console.log(`unexpected state${this.currentStatus}`);
             }
