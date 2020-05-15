@@ -19,10 +19,10 @@
                 @click.native="reset"
             />
             <SumButton
-                @click.native="op"
+                @click.native="op(add)"
             />
             <MulButton
-                @click.native="op"
+                @click.native="op(mul)"
             />
             <EqualButton
                 @click.native="equel"
@@ -68,6 +68,9 @@ export default {
             INPUT_RIGHT_STATE: 1,
             SHOW_ANSWER_STATE: 2,
             ERROR_STATE: 3,
+
+            // 這個變數裡面存的是一個「函數」
+            operation: Function,
         };
     },
     computed: {
@@ -81,7 +84,7 @@ export default {
                     return `按了加號的右半${this.rightValue}`;
 
                 case this.SHOW_ANSWER_STATE:
-                    return `按了等於合計是${this.leftValue + this.rightValue}`;
+                    return `按了等於合計是${this.operation(this.leftValue, this.rightValue)}`;
 
                 case this.ERROR_STATE:
                     return "錯誤";
@@ -124,7 +127,9 @@ export default {
                     console.log(`unexpected state${this.currentStatus}`);
             }
         },
-        op() {
+        op(operation) {
+            // 更新運算符號
+            this.operation = operation;
             switch (this.currentStatus) {
                 case this.INPUT_LEFT_STATE:
                     this.currentStatus = this.INPUT_RIGHT_STATE;
@@ -154,7 +159,8 @@ export default {
 
                 case this.INPUT_RIGHT_STATE:
                     this.currentStatus = this.SHOW_ANSWER_STATE;
-                    this.screen = this.leftValue + this.rightValue;
+                    // 把要運算的數值 left 跟 right 丟到稍早設定的運算符號(運算function)去執行
+                    this.screen = this.operation(this.leftValue, this.rightValue);
                     break;
 
                 case this.SHOW_ANSWER_STATE:
@@ -183,6 +189,12 @@ export default {
                 default:
                     console.log(`unexpected state${this.currentStatus}`);
             }
+        },
+        add(a, b) {
+            return a + b;
+        },
+        mul(a, b) {
+            return a * b;
         },
     },
 };
