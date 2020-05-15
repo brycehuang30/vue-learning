@@ -29,6 +29,26 @@
         <div>
             caculator現在狀態： {{ caculator }}
         </div>
+        <div>
+            <NumberButton
+                @click.native="digit"
+            />
+            <SumButton
+                @click.native="op"
+            />
+            <MulButton
+                @click.native="op"
+            />
+            <NumberButton
+                @click.native="digit"
+            />
+            <EqualButton
+                @click.native="equel"
+            />
+            <ResetButton
+                @click.native="reset"
+            />
+        </div>
     </div>
 </template>
 
