@@ -137,7 +137,8 @@ export default {
 
                 case this.INPUT_RIGHT_STATE:
                     this.currentStatus = this.INPUT_RIGHT_STATE;
-                    this.leftValue += this.screen;
+                    this.leftValue = this.operation(this.leftValue, this.rightValue);
+                    this.operation = operation;
                     this.rightValue = 0;
                     this.screen = this.leftValue;
                     break;
