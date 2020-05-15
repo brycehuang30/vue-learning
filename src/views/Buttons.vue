@@ -60,8 +60,6 @@ export default {
             numberstring2: 0,
 
             currentStatus: 0,
-            // 設定state, 通常就是從0開始編流水號,
-            // 我們只要讓每個STATE對應到的號碼不同就好了
             INPUT_LEFT_STATE: 0,
             INPUT_RIGHT_STATE: 1,
             SHOW_ANSWER_STATE: 2,
