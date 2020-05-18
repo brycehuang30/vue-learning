@@ -25,16 +25,17 @@ export default Vue.extend({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .screen {
-    width: 300px;
+    width: 100%;
     height: 40px;
-    background-color: rgb(166,166,149);
-    color: rgb(40,40,40);
+    box-sizing: border-box;
+    background-color: #000;
+    color: #fff;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    font-size: 40px;
-    margin: 3px;
-    padding: 3px 5px;
+    font-size: 50px;
+    margin: 20px 0;
+    padding: 20px 30px;
 }
 </style>

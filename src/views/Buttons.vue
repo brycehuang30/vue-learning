@@ -1,32 +1,51 @@
 /* eslint-disable no-undef */
 <template>
     <div class="buttons-wrapper">
-        <Screen :value="screen" />
-        <div class="number-buttons">
-            <NumberButton
-                v-for="(n,index) in number"
-                :key="index"
-                :number="n"
-                @click.native="digit(n)"
-            />
-            <NumberButton
-                :number="0"
-                @click.native="digit(0)"
-            />
-        </div>
-        <div class="buttons-row">
-            <ResetButton
-                @click.native="reset"
-            />
-            <SumButton
-                @click.native="op(add)"
-            />
-            <MulButton
-                @click.native="op(mul)"
-            />
-            <EqualButton
-                @click.native="equel"
-            />
+        <div class="caculator">
+            <Screen :value="screen" />
+            <div class="group">
+                <div class="number-buttons">
+                    <NumberButton
+                        v-for="(n,index) in number"
+                        :key="index"
+                        :number="n"
+                        @click.native="digit(n)"
+                    />
+                    <NumberButton
+                        class="zero"
+                        :number="0"
+                        @click.native="digit(0)"
+                    />
+                </div>
+                <div class="op">
+                    <ResetButton
+                        @click.native="reset"
+                    />
+                    <SumButton
+                        @click.native="op(add)"
+                    />
+                    <MulButton
+                        @click.native="op(mul)"
+                    />
+                    <EqualButton
+                        @click.native="equel"
+                    />
+                </div>
+            </div>
+            <!-- <div class="buttons-row">
+                <ResetButton
+                    @click.native="reset"
+                />
+                <SumButton
+                    @click.native="op(add)"
+                />
+                <MulButton
+                    @click.native="op(mul)"
+                />
+                <EqualButton
+                    @click.native="equel"
+                />
+            </div> -->
         </div>
         <div>
             caculator現在狀態： {{ caculator }}
@@ -128,8 +147,6 @@ export default {
             }
         },
         op(operation) {
-            // 更新運算符號
-            this.operation = operation;
             switch (this.currentStatus) {
                 case this.INPUT_LEFT_STATE:
                     this.currentStatus = this.INPUT_RIGHT_STATE;
@@ -158,6 +175,8 @@ export default {
                 default:
                     console.log(`unexpected state${this.currentStatus}`);
             }
+            // 更新運算符號
+            this.operation = operation;
         },
         equel() {
             switch (this.currentStatus) {
@@ -214,19 +233,31 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .number-buttons{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        width: 180px;
-        background-color: #ff837f;
-        padding: 3px;
-    }
-    .buttons-row {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
+    .caculator{
+        width: 260px;
+        height: 100%;
+        padding: 20px 0;
+        background-color: rgb(0, 0, 0);
+        .group{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            .number-buttons{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                width: 168px;
+                padding: 3px 0;
+            }
+            .op{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 3px 0;
+            }
+        }
     }
 }
 </style>

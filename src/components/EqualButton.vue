@@ -3,7 +3,7 @@
         class="equal-button"
         @click="sendMulSignal"
     >
-        =
+        <h1>=</h1>
     </div>
 </template>
 
@@ -31,14 +31,20 @@ export default Vue.extend({
 <style scoped lang="scss">
 .equal-button {
     width: 50px;
-    height: 30px;
-    background-color: #000000;
-    color: white;
+    height: 50px;
+    background-color: #f29604;
+    color: #ffffff;
+    border-radius: 50%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     font-size: 10px;
     margin: 3px;
+}
+.equal-button:hover{
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #f29604;
 }
 </style>

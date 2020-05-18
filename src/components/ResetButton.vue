@@ -3,7 +3,7 @@
         class="reset-button"
         @click="sendResetSignal"
     >
-        Reset
+        <h1>AC</h1>
     </div>
 </template>
 
@@ -31,14 +31,20 @@ export default Vue.extend({
 <style scoped lang="scss">
 .reset-button {
     width: 50px;
-    height: 30px;
-    background-color: red;
-    color: black;
+    height: 50px;
+    background-color: #a5a5a5;
+    color: #000;
+    border-radius: 50%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     font-size: 10px;
     margin: 3px;
+}
+.reset-button:hover{
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #000;
 }
 </style>

@@ -4,7 +4,7 @@
             class="number-button"
             @click="add"
         >
-            {{ number }}
+            <h1>{{ number }}</h1>
         </div>
     </div>
 </template>
@@ -27,15 +27,27 @@ export default Vue.extend({
 <style scoped lang="scss">
 .number-button {
     width: 50px;
-    height: 30px;
-    background-color: #fff27f;
-    color: black;
+    height: 50px;
+    background-color: rgb(49, 49, 49);
+    color: #fff;
+    border-radius: 50%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     font-size: 10px;
     margin: 3px;
+    h1{
+        font-size: 25px;
+        padding: 0;
+        margin: 0;
+        font-weight: 300;
+    }
+}
+
+.number-button:hover{
+    cursor: pointer;
+    background-color: #727272;
 }
 
 </style>
