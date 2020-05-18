@@ -48,9 +48,9 @@
                 />
             </div> -->
         </div>
-        <div>
+        <!-- <div>
             caculator現在狀態： {{ caculator }}
-        </div>
+        </div> -->
     </div>
 </template>
 
