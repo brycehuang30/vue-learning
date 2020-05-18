@@ -1,6 +1,7 @@
 <template>
     <div class="button">
         <div
+            :style="{width: width + 'px'}"
             class="number-button"
             @click="add"
         >
@@ -19,6 +20,10 @@ export default Vue.extend({
             type: Number,
             default: 0,
         },
+        width: {
+            type: Number,
+            default: 50,
+        },
     },
 });
 </script>
@@ -30,7 +35,7 @@ export default Vue.extend({
     height: 50px;
     background-color: rgb(49, 49, 49);
     color: #fff;
-    border-radius: 50%;
+    border-radius: 50px;
     display: flex;
     flex-direction: row;
     justify-content: center;

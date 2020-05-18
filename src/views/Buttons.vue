@@ -12,7 +12,8 @@
                         @click.native="digit(n)"
                     />
                     <NumberButton
-                        class="zero"
+                        :width="zeroButtonWidth"
+                        :border-radius="zeroborderRadius"
                         :number="0"
                         @click.native="digit(0)"
                     />
@@ -77,6 +78,7 @@ export default {
         return {
 
             number: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            zeroButtonWidth: 159,
 
             leftValue: 0,
             rightValue: 0,
